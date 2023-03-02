@@ -165,8 +165,13 @@ public class View extends javax.swing.JFrame {
            String player = (this.whoseTurn) ? "X" : "O";
            button.setText(player);
            String winner = this.isWinner();
+           String tie = this.isTie();
            if (!winner.equals("")) {
                jLabel1.setText(winner+" WINS THE GAME!!");
+               this.gameOver = true;
+           }
+           if (tie.equals("tie")) {
+               jLabel1.setText("TIE GAME.");
                this.gameOver = true;
            }
            this.whoseTurn = !this.whoseTurn;
@@ -190,12 +195,13 @@ public class View extends javax.swing.JFrame {
         status[2][0] = jButton7.getText();
         status[2][1] = jButton8.getText();
         status[2][2] = jButton9.getText();
+        
 
         // Check the rows and columns for a tic tac toe
         for (int i=0; i<3; i++) {
-            if (status[i][0].equals(status[i][1]) && status[i][0].equals(status[i][2]))
+            if (status[i][0].equals(status[i][1]) && status[i][0].equals(status[i][2]) && !status[i][0].equals(""))
                 return status[i][0];
-            if (status[0][i].equals(status[1][i]) && status[0][i].equals(status[2][i]))
+            if (status[0][i].equals(status[1][i]) && status[0][i].equals(status[2][i]) && !status[0][i].equals(""))
                 return status[0][i];
         }
 
@@ -208,6 +214,36 @@ public class View extends javax.swing.JFrame {
         // If we haven't found it, then return a blank string
         return "";
     }
+    
+    private String isTie() {
+        String[][] status = new String[3][3];
+        status[0][0] = jButton1.getText();
+        status[0][1] = jButton2.getText();
+        status[0][2] = jButton3.getText();
+        status[1][0] = jButton4.getText();
+        status[1][1] = jButton5.getText();
+        status[1][2] = jButton6.getText();
+        status[2][0] = jButton7.getText();
+        status[2][1] = jButton8.getText();
+        status[2][2] = jButton9.getText();
+        
+        for (int i=0; i<3; i++) {
+            if (!status[i][0].equals(status[i][1]) || !status[i][0].equals(status[i][2]) && !status[i][0].equals(""))
+                return "tie";
+            if (!status[0][i].equals(status[1][i]) || !status[0][i].equals(status[2][i]) && !status[0][i].equals(""))
+                return "tie";
+        }
+
+        // Check the diagonals
+        if (!status[0][0].equals(status[1][1]) || !status[0][0].equals(status[2][2]))
+            return "tie";
+        if (!status[0][2].equals(status[1][1]) || !status[0][2].equals(status[2][0]))
+            return "tie";
+
+        // If we haven't found it, then return a blank string
+        return "";
+    }
+    
     /**
      * @param args the command line arguments
      */
